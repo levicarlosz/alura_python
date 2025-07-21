@@ -1,6 +1,18 @@
 import os
 
-restaurantes = []
+restaurantes = [{
+    "nome": "Massa Saborosa",
+    "categoria": "Italiano",
+    "ativo": False
+},{
+    "nome": "Pizza Suprema",
+    "categoria": "Pizza",
+    "ativo": True
+},{
+    "nome": "Cantina",
+    "categoria": "Italiano",
+    "ativo": False
+}]
 
 
 def encerrar():
@@ -33,25 +45,52 @@ def exibir_subtitulo(texto:str):
 
 def cadastrar_restaurante():
     exibir_subtitulo("Cadastre um Novo Restaurante:")
-    nome_restaurante = input("Nome do Restaurante: ")
+    nome, categoria = map(str, input("Dados do Restaurante: ").split(","))
+    
+    dados_restaurante = {
+        "nome": nome.strip(),
+        "categoria": categoria.strip(),
+        "ativo": False
+    }
+    
     os.system("cls")
-    restaurantes.append(nome_restaurante)
-    print(f"O restaurante {nome_restaurante} foi cadastrado com sucesso \n")
+    restaurantes.append(dados_restaurante)
+    print(f"O restaurante {nome} foi cadastrado com sucesso \n")
     voltar_menu()
 
 
 def listar_restaurantes():
     exibir_subtitulo("Restaurantes Cadastrados:")
     for restaurante in restaurantes:
-        print(f".{restaurante}")
-    
-    os.system("cls")
+        nome = restaurante["nome"]
+        categoria = restaurante["categoria"]
+        ativo = "Ativo" if restaurante["ativo"] == True else "Inativo"
+        print(f". {nome} | {categoria} | {ativo}")
+    print("")
     voltar_menu()
 
 def opcao_invalida():
     os.system("cls")
     print("Opção Inválida! \n")
     voltar_menu()
+
+def ativar_restaurante():
+    exibir_subtitulo("3. Ativar/Inativar Restaurante")
+
+    try:
+        nome = input("Digite O Nome Do Restaurante: ")
+        for restaurante in restaurantes:
+            if nome == restaurante["nome"]:
+                estado = restaurante["ativo"]
+                if estado == True:
+                    restaurante["ativo"] = False
+                else:
+                    restaurante["ativo"] = True
+    except:
+        print("Operação inválida!")
+        
+    voltar_menu()
+            
 
 
 def escolha_opcoes():
@@ -65,7 +104,7 @@ def escolha_opcoes():
             case 2:
                 listar_restaurantes()
             case 3:
-                print("3. Ativar Restaurante")
+                ativar_restaurante()
             case 4:
                 encerrar()
             case _:
@@ -79,6 +118,7 @@ def main():
     titulo()
     menu()
     escolha_opcoes()
+    
 
 
 if __name__ == "__main__":
