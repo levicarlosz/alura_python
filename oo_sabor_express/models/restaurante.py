@@ -28,13 +28,17 @@ class Restaurante:
         return "☑" if self._status else "☐"
     
     def avaliar(self, cliente:str, nota:int):
-        avaliacao = Avaliacao(cliente, nota)
-        self._avaliacoes.append(avaliacao)
+        try:
+            if nota >= 0 and nota <= 5:
+                avaliacao = Avaliacao(cliente, nota)
+                self._avaliacoes.append(avaliacao)
+        except:
+            print("Insira uma nota entre 0 e 5")
     
     @property
     def media_avaliacoes(self):
         if not self._avaliacoes:
-            return 0
+            return "Não Avaliado"
         else:
             soma_avaliacoes = sum(avaliacao._nota for avaliacao in self._avaliacoes)
             media = round(soma_avaliacoes / len(self._avaliacoes), 1)
